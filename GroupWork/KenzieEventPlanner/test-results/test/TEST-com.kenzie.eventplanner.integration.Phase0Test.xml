@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.kenzie.eventplanner.integration.Phase0Test" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-11-30T01:59:31" hostname="MSI" time="1.924">
+  <properties/>
+  <testcase name="[1] DynamoDBIndexes-Events" classname="com.kenzie.eventplanner.integration.Phase0Test" time="1.095"/>
+  <testcase name="[2] DynamoDBIndexes-Invites" classname="com.kenzie.eventplanner.integration.Phase0Test" time="0.416"/>
+  <testcase name="[3] DynamoDBIndexes-Members" classname="com.kenzie.eventplanner.integration.Phase0Test" time="0.398"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

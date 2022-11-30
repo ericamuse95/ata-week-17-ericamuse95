@@ -2,6 +2,9 @@ Resources:
   CartonsTable:
     Type: AWS::DynamoDB::Table
     Properties:
+      "AttributeDefinitions":
+        - "AttributeName": "cartonId"
+          "AttributeType": "B"
       "KeySchema":
         - "AttributeName": "cartonId"
           "KeyType": "HASH"

@@ -1,0 +1,4 @@
+// Receipts
+receiptId // partition key, string
+customerId // sort key,string
+givenDate // integer

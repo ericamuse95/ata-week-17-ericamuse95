@@ -1,6 +1,6 @@
 package com.kenzie.dynamodbindexdesign.littleleague.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
 import java.util.Objects;
 
@@ -8,6 +8,9 @@ import java.util.Objects;
 // LeagueMatches table
 @DynamoDBTable(tableName = "DynamoDBIndexes-LeagueMatches")
 public class Match {
+    public static final String HOME_TEAM_MATCHES_INDEX = "HomeTeamMatchesIndex";
+    public static final String AWAY_TEAM_MATCHES_INDEX = "AwayTeamMatchesIndex";
+
     private String matchDate;
     private String matchTime;
     private String homeTeamScore;
@@ -26,14 +29,18 @@ public class Match {
         this.awayTeam = awayTeam;
     }
 
-    public String getMatchDate() {
-        return matchDate;
-    }
+   // @DynamoDBIndexRangeKey(globalSecondaryIndexName = HOME_TEAM_MATCHES_INDEX, attributeName = "matchDate")
+   @DynamoDBHashKey(attributeName = "matchDate")
+   @DynamoDBIndexRangeKey(globalSecondaryIndexNames = {HOME_TEAM_MATCHES_INDEX, AWAY_TEAM_MATCHES_INDEX}, attributeName = "matchDate")
+   public String getMatchDate() {
+       return matchDate;
+   }
 
     public void setMatchDate(String matchDate) {
         this.matchDate = matchDate;
     }
-
+    //@DynamoDBAttribute(attributeName = "matchTime")
+    @DynamoDBIndexRangeKey(globalSecondaryIndexNames = {HOME_TEAM_MATCHES_INDEX, AWAY_TEAM_MATCHES_INDEX}, attributeName = "matchTime")
     public String getMatchTime() {
         return matchTime;
     }
@@ -42,6 +49,7 @@ public class Match {
         this.matchTime = matchTime;
     }
 
+    @DynamoDBAttribute(attributeName = "homeTeamScore")
     public String getHomeTeamScore() {
         return homeTeamScore;
     }
@@ -50,6 +58,7 @@ public class Match {
         this.homeTeamScore = homeTeamScore;
     }
 
+    @DynamoDBAttribute(attributeName = "awayTeamScore")
     public String getAwayTeamScore() {
         return awayTeamScore;
     }
@@ -58,6 +67,9 @@ public class Match {
         this.awayTeamScore = awayTeamScore;
     }
 
+
+    @DynamoDBAttribute(attributeName = "homeTeam")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = HOME_TEAM_MATCHES_INDEX, attributeName = "homeTeam")
     public String getHomeTeam() {
         return homeTeam;
     }
@@ -65,6 +77,8 @@ public class Match {
     public void setHomeTeam(String homeTeam) {
         this.homeTeam = homeTeam;
     }
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "AwayTeamMatchesIndex", attributeName = "awayTeam")
+   // @DynamoDBHashKey(attributeName = "awayTeam")
 
     public String getAwayTeam() {
         return awayTeam;

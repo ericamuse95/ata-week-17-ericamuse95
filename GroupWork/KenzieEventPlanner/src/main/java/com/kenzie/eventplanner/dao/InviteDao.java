@@ -1,16 +1,15 @@
 package com.kenzie.eventplanner.dao;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.kenzie.eventplanner.dao.models.Event;
 import com.kenzie.eventplanner.dao.models.Invite;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDeleteExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.google.common.collect.ImmutableMap;
+import com.kenzie.eventplanner.dynamodb.DynamoDbClientProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
+
+import static com.kenzie.eventplanner.dao.models.Invite.MEMBER_ID_INDEX;
 
 /**
  * Manages access to Invite items.
@@ -50,10 +51,15 @@ public class InviteDao {
      * @return List of Invite objects sent to the given member
      */
     public List<Invite> getInvitesSentToMember(String memberId) {
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-            .withFilterExpression("memberId = :memberId")
-            .withExpressionAttributeValues(ImmutableMap.of(":memberId", new AttributeValue(memberId)));
-        return new ArrayList<>(mapper.scan(Invite.class, scanExpression));
+//        DynamoDBMapper mapper = new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient());
+        Map<String, AttributeValue> valueMap = new HashMap<>();
+        valueMap.put(":memberId", new AttributeValue().withS(memberId));
+        DynamoDBQueryExpression<Invite> queryExpression = new DynamoDBQueryExpression<Invite>()
+                .withIndexName(MEMBER_ID_INDEX)
+                .withConsistentRead(false)
+                .withKeyConditionExpression("memberId = :memberId")
+                .withExpressionAttributeValues(valueMap);
+        return new ArrayList<>(mapper.query(Invite.class, queryExpression));
     }
 
     /**
