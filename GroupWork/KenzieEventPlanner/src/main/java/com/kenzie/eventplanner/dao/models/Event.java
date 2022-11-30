@@ -1,13 +1,7 @@
 package com.kenzie.eventplanner.dao.models;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.kenzie.eventplanner.converter.ZonedDateTimeConverter;
-
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperFieldModel;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTyped;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -17,6 +11,8 @@ import java.util.Objects;
  */
 @DynamoDBTable(tableName = "DynamoDBIndexes-Events")
 public class Event {
+
+
     private String id;
     private String organizerId;
     private ZonedDateTime time;
@@ -24,7 +20,8 @@ public class Event {
     private String description;
     private Boolean isCanceled;
 
-    @DynamoDBHashKey(attributeName = "id")
+   // @DynamoDBHashKey(attributeName = "id")
+   @DynamoDBHashKey(attributeName = "id")
     public String getId() {
         return id;
     }
